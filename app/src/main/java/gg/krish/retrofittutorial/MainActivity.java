@@ -36,7 +36,10 @@ public class MainActivity extends AppCompatActivity {
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Setups up the API call
+                //Assigns temporary text to the TextView
+                textView.setText("Loading random follower...");
+
+                //Sets up up the API call
                 Call<List<UserModel>> call = gitHubApi.loadFollowers("krishmasand");
 
                 //Runs the call on a different thread
@@ -49,13 +52,15 @@ public class MainActivity extends AppCompatActivity {
 
                         //Loads a random follower and assigns it to the TextView
                         int index = (int) (Math.random() * followers.size());
-                        textView.setText(followers.get(index).getLogin());
+                        String text = "Random follower - " + followers.get(index).getLogin();
+                        textView.setText(text);
                     }
 
                     @Override
                     //If the call failed
                     public void onFailure(Call<List<UserModel>> call, Throwable t) {
-                        Log.e("RequestCall", "You screwed up");
+                        textView.setText("Request Failed");
+                        Log.e("RequestCall", "Request failed");
                     }
                 });
             }
